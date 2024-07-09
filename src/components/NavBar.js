@@ -32,6 +32,7 @@ const NavBar = () => {
             <button className="navbar-button" onClick={handleHomeClick}>Home</button>
             <button className="navbar-button" onClick={handleWorkoutClick}>Workout</button>
             <button className="navbar-button" onClick={handleExercisesClick}>Exercises</button>
+            <button className="navbar-button" onClick={() => navigate('/statistics')}>Statistics</button>
         </div>
     );
 };

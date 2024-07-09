@@ -2,19 +2,19 @@
 import React from 'react';
 import './ExercisePopup.css';
 
-const ExercisePopup = ({ exercises, onSelect, onClose }) => {
+const ExercisePopup = ({ savedExercises, addExercise, setShowPopup }) => {
     return (
-        <div className="popup-overlay">
-            <div className="popup-content">
+        <div className="popup-container">
+            <div className="popup">
                 <h2>Select Exercise</h2>
                 <ul>
-                    {exercises.map((exercise, index) => (
-                        <li key={index} onClick={() => onSelect(exercise)}>
-                            {exercise}
+                    {savedExercises.map((exercise, index) => (
+                        <li key={index}>
+                            <button onClick={() => addExercise(exercise)}>{exercise}</button>
                         </li>
                     ))}
                 </ul>
-                <button onClick={onClose}>Close</button>
+                <button onClick={() => setShowPopup(false)}>Close</button>
             </div>
         </div>
     );

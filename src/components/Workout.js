@@ -1,10 +1,13 @@
 // src/components/Workout.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Workout.css'; // Import the CSS file
+import ExercisePopup from './ExercisePopup';
+import './Workout.css';
 
 const Workout = () => {
     const [exercises, setExercises] = useState([]);
+    const [showPopup, setShowPopup] = useState(false);
+    const [savedExercises, setSavedExercises] = useState([]);
     const navigate = useNavigate();
     const workoutName = localStorage.getItem('workoutName');
 
@@ -20,10 +23,14 @@ const Workout = () => {
                 setExercises([]);
             }
         }
+
+        const exercises = JSON.parse(localStorage.getItem('savedExercises')) || [];
+        setSavedExercises(exercises);
     }, [workoutName, navigate]);
 
-    const addExercise = () => {
-        setExercises([...exercises, { name: 'Exercise', sets: [{ reps: '', weight: '' }] }]);
+    const addExercise = (exerciseName) => {
+        setExercises([...exercises, { name: exerciseName, sets: [{ reps: '', weight: '' }] }]);
+        setShowPopup(false);
     };
 
     const handleExerciseChange = (index, key, value) => {
@@ -73,13 +80,13 @@ const Workout = () => {
             let maxCounter = 1;
             savedWorkouts.forEach(workout => {
                 const match = workout.name.match(new RegExp(`^${workoutName} (\\d+)$`));
-                if (match && parseInt(match[1], 10) >= maxCounter) {
-                    maxCounter = parseInt(match[1], 10) + 1;
+                if (match && parseInt(match[1], 10) > maxCounter) {
+                    maxCounter = parseInt(match[1], 10);
                 }
             });
 
-            // Append the counter to the workout name
-            const newWorkoutName = `${workoutName} ${maxCounter}`;
+            // Increment the counter
+            const newWorkoutName = `${workoutName} ${maxCounter + 1}`;
             updatedWorkouts.push({ name: newWorkoutName, exercises });
         } else {
             // If it's a new workout name, just add it
@@ -93,14 +100,12 @@ const Workout = () => {
     return (
         <div className="container">
             <header>
-                <div className="workout-header">
-                    <h1 className="workout-title">Workout: {workoutName}</h1>
-                    <button className="home-button" onClick={() => navigate('/')}>Home</button>
-                </div>
+                <h1>Workout: {workoutName}</h1>
+                <button className="home-button" onClick={() => navigate('/')}>Home</button>
             </header>
             <main>
                 <section id="exercises-section">
-                    <button onClick={addExercise}>Add Exercise</button>
+                    <button onClick={() => setShowPopup(true)}>Add Exercise</button>
                     <ul id="exercises-list">
                         {exercises.map((exercise, index) => (
                             <li key={index} className="exercise-item">
@@ -139,6 +144,7 @@ const Workout = () => {
                         <button onClick={saveWorkout} style={{ marginTop: '20px' }}>Save Workout</button>
                     )}
                 </section>
+                {showPopup && <ExercisePopup savedExercises={savedExercises} addExercise={addExercise} setShowPopup={setShowPopup} />}
             </main>
         </div>
     );

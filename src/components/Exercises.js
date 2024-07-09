@@ -1,5 +1,5 @@
 // src/components/Exercises.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Exercises.css';
 
 const Exercises = () => {
@@ -17,71 +17,87 @@ const Exercises = () => {
         'Kreuzheben', 
         'Skater Squad'
     ]);
+
+    useEffect(() => {
+        const savedExercises = JSON.parse(localStorage.getItem('savedExercises'));
+        if (savedExercises) {
+            setExercises(savedExercises);
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('savedExercises', JSON.stringify(exercises));
+    }, [exercises]);
+
     const [newExercise, setNewExercise] = useState('');
-    const [editIndex, setEditIndex] = useState(null);
-    const [editName, setEditName] = useState('');
+    const [editingIndex, setEditingIndex] = useState(null);
+    const [editingExercise, setEditingExercise] = useState('');
 
     const addExercise = () => {
-        if (newExercise.trim()) {
-            setExercises([...exercises, newExercise]);
+        if (newExercise.trim() !== '') {
+            setExercises([...exercises, newExercise.trim()]);
             setNewExercise('');
         }
     };
 
-    const startEdit = (index, name) => {
-        setEditIndex(index);
-        setEditName(name);
-    };
-
-    const saveEdit = () => {
-        const updatedExercises = exercises.map((exercise, index) =>
-            index === editIndex ? editName : exercise
-        );
-        setExercises(updatedExercises);
-        setEditIndex(null);
-        setEditName('');
-    };
-
     const removeExercise = (index) => {
-        const updatedExercises = exercises.filter((_, i) => i !== index);
+        setExercises(exercises.filter((_, i) => i !== index));
+    };
+
+    const startEditing = (index) => {
+        setEditingIndex(index);
+        setEditingExercise(exercises[index]);
+    };
+
+    const cancelEdit = () => {
+        setEditingIndex(null);
+        setEditingExercise('');
+    };
+
+    const saveEdit = (index) => {
+        const updatedExercises = exercises.map((exercise, i) => (
+            i === index ? editingExercise : exercise
+        ));
         setExercises(updatedExercises);
+        cancelEdit();
     };
 
     return (
         <div className="container">
             <header>
-                <h1>Exercise List</h1>
+                <h1>Exercises</h1>
             </header>
             <main>
-                <section id="exercise-section">
-                    <input 
-                        type="text" 
-                        placeholder="New Exercise" 
-                        value={newExercise} 
-                        onChange={(e) => setNewExercise(e.target.value)} 
-                    />
-                    <button onClick={addExercise}>Add Exercise</button>
-                    <ul>
-                        {exercises.map((exercise, index) => (
-                            <li key={index}>
-                                <span onClick={() => startEdit(index, exercise)}>
+                <input
+                    type="text"
+                    value={newExercise}
+                    onChange={(e) => setNewExercise(e.target.value)}
+                    placeholder="New Exercise"
+                />
+                <button onClick={addExercise}>Add Exercise</button>
+                <ul>
+                    {exercises.map((exercise, index) => (
+                        <li key={index}>
+                            {editingIndex === index ? (
+                                <div>
+                                    <input
+                                        type="text"
+                                        value={editingExercise}
+                                        onChange={(e) => setEditingExercise(e.target.value)}
+                                    />
+                                    <button onClick={() => saveEdit(index)}>✔️</button>
+                                    <button onClick={cancelEdit}>❌</button>
+                                </div>
+                            ) : (
+                                <div>
                                     {exercise}
-                                </span>
-                                {editIndex === index && (
-                                    <div className="edit-popup">
-                                        <input 
-                                            type="text" 
-                                            value={editName} 
-                                            onChange={(e) => setEditName(e.target.value)} 
-                                        />
-                                        <button onClick={saveEdit}>✔️</button>
-                                        <button onClick={() => removeExercise(index)}>❌</button>
-                                    </div>
-                                )}
-                            </li>
-                        ))}
-                    </ul>
-                </section>
+                                    <button onClick={() => startEditing(index)}>✏️</button>
+                                    <button onClick={() => removeExercise(index)}>❌</button>
+                                </div>
+                            )}
+                        </li>
+                    ))}
+                </ul>
             </main>
         </div>
     );

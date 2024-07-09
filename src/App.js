@@ -5,6 +5,7 @@ import Home from './components/Home';
 import Workout from './components/Workout';
 import Exercises from './components/Exercises'; // Import the new component
 import NavBar from './components/NavBar';
+import Statistics from './components/Statistics';
 
 function App() {
     return (
@@ -13,7 +14,8 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/workout" element={<Workout />} />
-                    <Route path="/exercises" element={<Exercises />} /> {/* Add the new route */}
+                    <Route path="/exercises" element={<Exercises />} /> 
+                    <Route path="/statistics" element={<Statistics />} />
                 </Routes>
                 <NavBar />
             </div>
