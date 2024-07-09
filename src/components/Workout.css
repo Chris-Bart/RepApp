@@ -1,0 +1,35 @@
+/* src/components/Workout.css */
+.workout-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    flex-wrap: nowrap;
+}
+
+.workout-title {
+    margin: 0;
+    font-size: 1.5em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+
+.home-button {
+    margin-left: 10px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+    .workout-title {
+        font-size: 1.2em;
+    }
+
+    .home-button {
+        margin-left: 10px;
+        font-size: 0.9em;
+    }
+}

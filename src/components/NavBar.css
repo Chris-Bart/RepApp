@@ -1,0 +1,23 @@
+/* src/components/NavBar.css */
+.navbar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    background-color: #333;
+    padding: 10px 0;
+}
+
+.navbar-button {
+    color: white;
+    background-color: transparent;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 10px 20px;
+}
+
+.navbar-button:hover {
+    background-color: #555;
+}

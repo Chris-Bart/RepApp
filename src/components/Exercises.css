@@ -1,0 +1,67 @@
+/* src/components/Exercises.css */
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+}
+
+#exercise-section {
+    margin-top: 20px;
+}
+
+#exercise-section input {
+    margin-right: 10px;
+    padding: 5px;
+    font-size: 1em;
+}
+
+#exercise-section button {
+    padding: 5px 10px;
+    font-size: 1em;
+}
+
+#exercise-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+#exercise-section li {
+    margin: 5px 0;
+    padding: 5px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    position: relative;
+}
+
+.edit-popup {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    border: 1px solid #ddd;
+    z-index: 1;
+}
+
+.edit-popup input {
+    flex: 1;
+    margin-right: 10px;
+    padding: 5px;
+    font-size: 1em;
+}
+
+.edit-popup button {
+    padding: 5px 10px;
+    font-size: 1em;
+}
